@@ -34,7 +34,7 @@ private Connection conn;
 			st.setString(1, p.getName());
 			st.setInt(2, p.getIdade());
 			st.setDate(3, new java.sql.Date(p.getBirthdate().getTime()));
-			st.setString(4, p.getGender());
+			st.setString(4, p.getSex());
 			st.setString(5, p.getCns());
 			st.setString(6, p.getCpf());
 			st.setString(7, p.getRg());
@@ -74,7 +74,7 @@ private Connection conn;
 			st.setString(1, p.getName());
 			st.setInt(2, p.getIdade());
 			st.setDate(3, new java.sql.Date(p.getBirthdate().getTime()));
-			st.setString(4, p.getGender());
+			st.setString(4, p.getSex());
 			st.setString(5, p.getCns());
 			st.setString(6, p.getCpf());
 			st.setString(7, p.getRg());
@@ -97,7 +97,7 @@ private Connection conn;
 	public void deleteById(int id) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement("DELETE FROM pacientes WHERE Id = ?");
+			st = conn.prepareStatement("DELETE FROM pacientes WHERE paciente_id = ?");
 			
 			st.setInt(1, id);
 			
@@ -120,7 +120,7 @@ private Connection conn;
 			st = conn.prepareStatement(
 					"SELECT * "
 					+ "FROM pacientes "
-					+ "WHERE seller.Id = ?");
+					+ "WHERE paciente_id = ?");
 			
 			st.setInt(1, id);
 			rs = st.executeQuery();
@@ -145,7 +145,7 @@ private Connection conn;
 		obj.setName(rs.getString("paciente_name"));
 		obj.setIdade(rs.getInt("idade"));
 		obj.setBirthdate(rs.getDate("data_nascimento"));
-		obj.setGender(rs.getString("sexo"));
+		obj.setSex(rs.getString("sexo"));
 		obj.setCns(rs.getString("cns"));
 		obj.setCpf(rs.getString("cpf"));
 		obj.setRg(rs.getString("rg"));

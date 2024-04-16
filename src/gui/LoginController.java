@@ -43,7 +43,6 @@ public class LoginController {
 		            return;
 		        }
 				if (service.validate(user)) {
-					System.out.println("Hi");
 					FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/Pacientes.fxml"));
 					ScrollPane scrollpane = loader.load();
 					

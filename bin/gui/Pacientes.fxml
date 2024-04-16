@@ -13,10 +13,9 @@
          <children>
             <ToolBar prefHeight="40.0" prefWidth="200.0">
               <items>
+                  <Button fx:id="btCadastro" mnemonicParsing="false" onAction="#btActionCadastro" text="Cadastro" />
                 <Button fx:id="btSintomas" mnemonicParsing="false" onAction="#btActionSintomas" text="Sintomas" />
-                  <Button fx:id="btCadastro" mnemonicParsing="false" onAction="#btActionCadastro" text="cadastro" />
-                  <Button fx:id="btPesquisa" mnemonicParsing="false" onAction="#btActionPesquisa" text="pesquisa" />
-                  <Button fx:id="btAjuda" mnemonicParsing="false" onAction="#btActionAjuda" text="ajuda" />
+                  <Button fx:id="btAjuda" mnemonicParsing="false" onAction="#btActionAjuda" text="Ajuda" />
               </items>
             </ToolBar>
             <TableView fx:id="tvPacientes" prefHeight="335.0" prefWidth="878.0">

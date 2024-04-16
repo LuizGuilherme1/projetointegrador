@@ -21,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -97,8 +98,28 @@ public class PacientesController implements Initializable, DataChangeListener{
 	}
 	
 	@FXML
-	public void btActionSintomas() {
+	public void btActionSintomas(ActionEvent event) {
 		//TODO
+		try {
+		  FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/Symptoms.fxml"));
+		  ScrollPane scrollpane = loader.load();
+		
+		  scrollpane.setFitToHeight(true);
+		  scrollpane.setFitToWidth(true);
+		
+		  Stage parentStage = Utils.currentStage(event);
+		  Scene scene = Main.getMainScene();
+		  scene = new Scene(scrollpane);
+		  parentStage.setScene(scene);
+		  parentStage.setTitle("Sintomas");
+		  parentStage.show();
+		
+		  SymptomsController controller = loader.getController();
+		  //controller.updateTableView();
+		  
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML
@@ -112,7 +133,6 @@ public class PacientesController implements Initializable, DataChangeListener{
 				"Sintomas redireciona para a pagina de sintomas, Cadastro adiciona um novo paciente, "
 				+ "pesquisa acha um paciente por id, Ajuda ver Sobre, Edit permit editar os dados de um paciente "
 				+ "e Delete deleta um paciente.", AlertType.INFORMATION);
-		//updateTableView();
 	}
 	
 	public void setPacienteServices(PacienteService service) {
@@ -127,8 +147,9 @@ public class PacientesController implements Initializable, DataChangeListener{
 			AddController controller = loader.getController();
 			controller.setPaciente(obj);
 			controller.setService(new PacienteService());
+			controller.loadAssociatedObjects();
 			controller.subscribeDataChangeListener(this);
-			//controller.updateFormData();
+			controller.updateFormData();
 
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("enter Department data");
@@ -218,9 +239,8 @@ public class PacientesController implements Initializable, DataChangeListener{
 		tcName.setCellValueFactory(new PropertyValueFactory<>("name"));
 		tcIdade.setCellValueFactory(new PropertyValueFactory<>("idade"));
 		tcBirthdate.setCellValueFactory(new PropertyValueFactory<>("birthdate"));
-		System.out.println(tcBirthdate);
 		Utils.formatTableColumnDate(tcBirthdate, "dd/MM/yyyy");
-		tcSexo.setCellValueFactory(new PropertyValueFactory<>("gender"));
+		tcSexo.setCellValueFactory(new PropertyValueFactory<>("sex"));
 		tcCns.setCellValueFactory(new PropertyValueFactory<>("cns"));
 		tcCpf.setCellValueFactory(new PropertyValueFactory<>("cpf"));
 		tcRg.setCellValueFactory(new PropertyValueFactory<>("rg"));
@@ -228,8 +248,6 @@ public class PacientesController implements Initializable, DataChangeListener{
 		tcEndereço.setCellValueFactory(new PropertyValueFactory<>("endereco"));
 		tcComplemento.setCellValueFactory(new PropertyValueFactory<>("complemento"));
 		
-		//Stage stage = (Stage) Main.getMainScene().getWindow();
-		//tvPacientes.prefHeightProperty().bind(stage.heightProperty());
 	}
 
 	@Override

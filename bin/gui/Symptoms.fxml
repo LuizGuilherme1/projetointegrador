@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -13,8 +16,17 @@
          <children>
             <ToolBar prefHeight="40.0" prefWidth="200.0">
               <items>
-                <Button fx:id="btPacientes" mnemonicParsing="false" text="Pacientes" />
+                <Button fx:id="btPacientes" mnemonicParsing="false" onAction="#onBtActionPacientes" text="Pacientes" />
                   <Button fx:id="btAjuda" mnemonicParsing="false" onAction="#onBtActionAjuda" text="ajuda" />
+                  <MenuBar>
+                    <menus>
+                      <Menu mnemonicParsing="false" text="tipo">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="Close" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
               </items>
             </ToolBar>
             <TableView fx:id="tvSymptoms" prefHeight="333.0" prefWidth="596.0">

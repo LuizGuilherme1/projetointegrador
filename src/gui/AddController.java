@@ -1,23 +1,29 @@
 package gui;
 
 import java.net.URL;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import db.DbException;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import model.entites.Pacientes;
@@ -71,6 +77,21 @@ public class AddController implements Initializable{
 	private Button btCancel;
 	
 	@FXML
+	private Label labelErrorName;
+	
+	@FXML
+	private Label labelErrorIdade;
+	
+	@FXML
+	private Label labelErrorBirthdate;
+	
+	@FXML
+	private Label labelErrorSex;
+	
+	@FXML
+	private Label labelErrorCpf;
+	
+	@FXML
 	public void onBtCancelAction(ActionEvent event) {
 		Utils.currentStage(event).close();
 	}
@@ -89,6 +110,8 @@ public class AddController implements Initializable{
 			notifyDataChangeListeners();
 			Utils.currentStage(event).close();
 			
+		}catch (ValidationException e) {
+			setErrorMessages(e.getErrors());
 		} catch (DbException e) {
 			Alerts.showAlert("Error Saving object", null, e.getMessage(), AlertType.ERROR);
 		}
@@ -130,17 +153,60 @@ public class AddController implements Initializable{
 		if (entity.getBirthdate() != null) {
 			dpBirthdate.setValue(LocalDate.ofInstant(entity.getBirthdate().toInstant(), ZoneId.systemDefault()));
 		}
-		if(entity.getGender() == null) {
+		if(entity.getSex() == null) {
 			comboBoxSex.getSelectionModel().selectFirst();
 		}else {
-			comboBoxSex.setValue(entity.getGender());
+			comboBoxSex.setValue(entity.getSex());
 		}
-		comboBoxSex.setValue(entity.getGender());
+		comboBoxSex.setValue(entity.getSex());
 	}
 
 	private Pacientes getFormData() {
-		// TODO Auto-generated method stub
-		return null;
+		Pacientes obj = new Pacientes();
+		
+		ValidationException exception = new ValidationException("Validation error");
+		
+		obj.setId(Utils.tryParseToInt(txId.getText()));
+		
+		if(txName.getText() == null || txName.getText().trim().equals("")) {
+			exception.addError("name", "Field can't be empty");
+		}
+		obj.setName(txName.getText());
+		
+		if(txIdade.getText() == null || txIdade.getText().trim().equals("")) {
+			exception.addError("idade", "Field can't be empty");
+		}
+		obj.setIdade(Utils.tryParseToInt(txIdade.getText()));
+		
+		if(dpBirthdate.getValue()==null){
+			exception.addError("birthdate", "Field can't be empty");
+		}else {
+			Instant instant = Instant.from(dpBirthdate.getValue().atStartOfDay(ZoneId.systemDefault()));
+			obj.setBirthdate(Date.from(instant));
+		}
+		
+		obj.setSex(comboBoxSex.getValue());
+		
+		obj.setCns(txCns.getText());
+		
+		if(txCpf.getText() == null || txCpf.getText().trim().equals("")) {
+			exception.addError("cpf", "Field can't be empty");
+		}
+		obj.setCpf(txCpf.getText());
+		
+		obj.setRg(txRg.getText());
+		
+		obj.setCep(txCep.getText());
+		
+		obj.setEndereco(txEndereco.getText());
+		
+		obj.setComplemento(txComplemento.getText());
+		
+		if (exception.getErrors().size() > 0) {
+			throw exception;
+		}
+		
+		return obj;
 	}
 
 	@Override
@@ -149,15 +215,40 @@ public class AddController implements Initializable{
 	}
 
 	private void initializeNodes() {
+		Constraints.setTextFieldInteger(txId);
 		Constraints.setTextFieldInteger(txIdade);
 		Utils.formatDatePicker(dpBirthdate, "dd/MM/yyyy");
+		
 		initializeComboBoxDepartment();
 		
+	}
+	
+	public void loadAssociatedObjects() {
+		comboBoxSex.setItems(FXCollections.observableArrayList(new String("M"),
+				new String("F")));
 	}
 
 	private void initializeComboBoxDepartment() {
 		//TODO
-		
+		/*
+		ComboBox<SexComboBox> comboBox = new ComboBox<SexComboBox>();
+		comboBox.setItems(FXCollections.observableArrayList(
+				new SexComboBox("m", "masculino"),
+				new SexComboBox("f", "feminino")));
+	    */
+		comboBoxSex.setItems(FXCollections.observableArrayList(new String("M"),
+				new String("F")));
+	}
+	
+	private void setErrorMessages(Map<String, String> errors) {
+		//TODO
+		Set<String> fields = errors.keySet();
+
+		labelErrorName.setText((fields.contains("paciente_name") ? errors.get("paciente_name") : ""));
+		labelErrorIdade.setText((fields.contains("idade") ? errors.get("idade") : ""));
+		labelErrorBirthdate.setText((fields.contains("data_nascimento") ? errors.get("data_nascimento") : ""));
+		labelErrorSex.setText((fields.contains("sexo") ? errors.get("sexo") : ""));
+		labelErrorCpf.setText((fields.contains("cpf") ? errors.get("cpf") : ""));
 	}
 	
 }
