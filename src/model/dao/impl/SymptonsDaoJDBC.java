@@ -25,7 +25,7 @@ public class SymptonsDaoJDBC implements SymptonsDao{
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT * FROM projetointegrador.Symptons "
+					"SELECT * FROM symptons "
 					+ "ORDER BY id");
 			
 			rs = st.executeQuery();
@@ -46,13 +46,74 @@ public class SymptonsDaoJDBC implements SymptonsDao{
 			DB.closeResultSet(rs);
 		}
 	}
-//TODO
+	
 	private Symptons instantiateSymptons(ResultSet rs) throws SQLException{
 		Symptons obj = new Symptons();
-		obj.setType(rs.getString("type"));
-		obj.setName(rs.getString("name"));
-		obj.setDesc(rs.getString("desc"));
+		obj.setTranstorno(rs.getString("transtorno"));
+		obj.setCid(rs.getString("cid"));
+		obj.setSintomas_biologicos(rs.getString("sintomas_biologicos"));
+		obj.setConsequencias_sociais(rs.getString("consequencias_sociais"));
+		obj.setCaracteristicas(rs.getString("caracteristicas"));
 		return obj;
+	}
+
+	@Override
+	public List<Symptons> search(String s) {
+		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+					"SELECT * FROM symptons "
+					+ "where caracteristicas like ? ");
+			
+			st.setString(1, s.toString());		
+			rs = st.executeQuery();
+			
+			List<Symptons> list = new ArrayList<>();
+			
+			while (rs.next()) {
+				Symptons obj = instantiateSymptons(rs);
+				list.add(obj);
+			}
+			return list;
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+		//
+	}
+
+	@Override
+	public List<Symptons> findCid() {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+					"SELECT * FROM symptons "
+					+ "ORDER BY cid");
+			
+			rs = st.executeQuery();
+			
+			List<Symptons> list = new ArrayList<>();
+			
+			while (rs.next()) {
+				Symptons obj = instantiateSymptons(rs);
+				list.add(obj);
+			}
+			return list;
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 
 }

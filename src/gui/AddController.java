@@ -27,11 +27,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import model.entites.Pacientes;
+import model.entites.Usuario;
 import model.exceptions.ValidationException;
 import model.service.PacienteService;
 
 public class AddController implements Initializable{
 	private Pacientes entity;
+	
+	private Usuario user;
 	
 	private PacienteService service;
 	
@@ -96,6 +99,7 @@ public class AddController implements Initializable{
 		Utils.currentStage(event).close();
 	}
 	
+	
 	@FXML
 	public void onActionSave(ActionEvent event) {
 		if (entity == null) {
@@ -106,7 +110,7 @@ public class AddController implements Initializable{
 		}
 		try {
 			entity = getFormData();
-			service.saveOrUpdate(entity);
+			service.saveOrUpdate(entity,user);
 			notifyDataChangeListeners();
 			Utils.currentStage(event).close();
 			
@@ -119,6 +123,10 @@ public class AddController implements Initializable{
 	
 	public void setPaciente(Pacientes entity) {
 		this.entity = entity;
+	}
+	
+	public void setUser(Usuario user) {
+		this.user = user;
 	}
 	
 	public void setService(PacienteService service) {
@@ -150,8 +158,11 @@ public class AddController implements Initializable{
 		txEndereco.setText(entity.getEndereco());
 		txComplemento.setText(entity.getComplemento());
 		Locale.setDefault(Locale.US);
-		if (entity.getBirthdate() != null) {
-			dpBirthdate.setValue(LocalDate.ofInstant(entity.getBirthdate().toInstant(), ZoneId.systemDefault()));
+		
+		Date birthDate = entity.getBirthdate();
+		if (birthDate != null) {
+			java.util.Date utilDate = new java.util.Date(entity.getBirthdate().getTime());
+			dpBirthdate.setValue(LocalDate.ofInstant(utilDate.toInstant(), ZoneId.systemDefault()));
 		}
 		if(entity.getSex() == null) {
 			comboBoxSex.getSelectionModel().selectFirst();
@@ -224,20 +235,13 @@ public class AddController implements Initializable{
 	}
 	
 	public void loadAssociatedObjects() {
-		comboBoxSex.setItems(FXCollections.observableArrayList(new String("M"),
-				new String("F")));
+		comboBoxSex.setItems(FXCollections.observableArrayList(new String("Masculino"),
+				new String("Feminino"), new String("Outro")));
 	}
 
 	private void initializeComboBoxDepartment() {
-		//TODO
-		/*
-		ComboBox<SexComboBox> comboBox = new ComboBox<SexComboBox>();
-		comboBox.setItems(FXCollections.observableArrayList(
-				new SexComboBox("m", "masculino"),
-				new SexComboBox("f", "feminino")));
-	    */
-		comboBoxSex.setItems(FXCollections.observableArrayList(new String("M"),
-				new String("F")));
+		comboBoxSex.setItems(FXCollections.observableArrayList(new String("Masculino"),
+				new String("Feminino"), new String("Outro")));
 	}
 	
 	private void setErrorMessages(Map<String, String> errors) {

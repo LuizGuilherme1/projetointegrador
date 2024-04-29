@@ -31,11 +31,14 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entites.Pacientes;
+import model.entites.Usuario;
 import model.service.PacienteService;
 
 public class PacientesController implements Initializable, DataChangeListener{
 
 	private PacienteService service = new PacienteService();
+	
+	private Usuario user;
 	
 	@FXML
 	private TableView<Pacientes> tvPacientes;
@@ -99,7 +102,6 @@ public class PacientesController implements Initializable, DataChangeListener{
 	
 	@FXML
 	public void btActionSintomas(ActionEvent event) {
-		//TODO
 		try {
 		  FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/Symptoms.fxml"));
 		  ScrollPane scrollpane = loader.load();
@@ -115,18 +117,19 @@ public class PacientesController implements Initializable, DataChangeListener{
 		  parentStage.show();
 		
 		  SymptomsController controller = loader.getController();
-		  //controller.updateTableView();
+		  controller.updateTableView(user);
+		  controller.loadAssociatedObjects();
 		  
 		}catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+	/*
 	@FXML
 	public void btActionPesquisa() {
 		//TODO
 	}
-	
+	*/
 	@FXML
 	public void btActionAjuda() {
 		Alerts.showAlert("Sobre", "uma pagina para esplicar o que os botoes fazem", 
@@ -146,6 +149,7 @@ public class PacientesController implements Initializable, DataChangeListener{
 
 			AddController controller = loader.getController();
 			controller.setPaciente(obj);
+			controller.setUser(user);
 			controller.setService(new PacienteService());
 			controller.loadAssociatedObjects();
 			controller.subscribeDataChangeListener(this);
@@ -165,13 +169,16 @@ public class PacientesController implements Initializable, DataChangeListener{
 		}
 	}
 	
+	public void passUser(Usuario user) {
+		this.user = user;
+	}
 	
-	
-	public void updateTableView() {
+	public void updateTableView(Usuario user) {
+		passUser(user);
 		if (service == null) {
 			throw new IllegalStateException("Service was null");
 		}
-		List<Pacientes> list = service.findAll();
+		List<Pacientes> list = service.findAll(user);
 		obsList = FXCollections.observableArrayList(list);
 		tvPacientes.setItems(obsList);
 		initEditButtons();
@@ -223,13 +230,13 @@ public class PacientesController implements Initializable, DataChangeListener{
 			}
 			try {
 				service.remove(obj);
-				updateTableView();
+				updateTableView(user);
 			} catch (DbIntegrityException e) {
 				Alerts.showAlert("Error Removing Object", null, e.getMessage(), AlertType.ERROR);
 			}
 		}
 	}
-	//
+	
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		initializeNodes();
@@ -252,7 +259,7 @@ public class PacientesController implements Initializable, DataChangeListener{
 
 	@Override
 	public void onDataChanged() {
-		updateTableView();
+		updateTableView(user);
 		
 	}
 

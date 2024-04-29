@@ -1,42 +1,68 @@
 package model.entites;
 
 public class Symptons {
-	private String type;
-	private String name;
-	private String desc;
+	private Long id;
+	private String transtorno;
+	private String cid;
+	private String sintomas_biologicos;
+	private String consequencias_sociais;
+	private String caracteristicas;
 	
 	public Symptons() {
 	}
-
-	public Symptons(String type, String name, String desc) {
+	
+	public Symptons(Long id, String transtorno, String cid, String sintomas_biologicos, String consequencias_sociais,
+			String caracteristicas) {
 		super();
-		this.type = type;
-		this.name = name;
-		this.desc = desc;
+		this.id = id;
+		this.transtorno = transtorno;
+		this.cid = cid;
+		this.sintomas_biologicos = sintomas_biologicos;
+		this.consequencias_sociais = consequencias_sociais;
+		this.caracteristicas = caracteristicas;
 	}
 
-	public String getType() {
-		return type;
+	public Long getId() {
+		return id;
 	}
-
-	public void setType(String type) {
-		this.type = type;
+	public void setId(Long id) {
+		this.id = id;
 	}
-
-	public String getName() {
-		return name;
+	public String getTranstorno() {
+		return transtorno;
 	}
-
-	public void setName(String name) {
-		this.name = name;
+	public void setTranstorno(String transtorno) {
+		this.transtorno = transtorno;
 	}
-
-	public String getDesc() {
-		return desc;
+	public String getCid() {
+		return cid;
 	}
-
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setCid(String cid) {
+		this.cid = cid;
+	}
+	public String getSintomas_biologicos() {
+		return sintomas_biologicos;
+	}
+	public void setSintomas_biologicos(String sintomas_biologicos) {
+		this.sintomas_biologicos = sintomas_biologicos;
+	}
+	public String getConsequencias_sociais() {
+		return consequencias_sociais;
+	}
+	public void setConsequencias_sociais(String consequencias_sociais) {
+		this.consequencias_sociais = consequencias_sociais;
+	}
+	public String getCaracteristicas() {
+		return caracteristicas;
+	}
+	public void setCaracteristicas(String caracteristicas) {
+		this.caracteristicas = caracteristicas;
+	}
+	@Override
+	public String toString() {
+		return "Symptons [id=" + id + ", transtorno=" + transtorno + ", cid=" + cid + ", sintomas_biologicos="
+				+ sintomas_biologicos + ", consequencias_sociais=" + consequencias_sociais + ", caracteristicas="
+				+ caracteristicas + "]";
 	}
 	
 	

@@ -12,6 +12,7 @@ import db.DB;
 import db.DbException;
 import model.dao.PacientesDao;
 import model.entites.Pacientes;
+import model.entites.Usuario;
 
 public class PacientesDaoJDBC implements PacientesDao{
 	
@@ -22,14 +23,14 @@ private Connection conn;
 	}
 
 	@Override
-	public void insert(Pacientes p) {
+	public void insert(Pacientes p, Usuario user) {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO pacientes "
-					+ "(paciente_name, idade, data_nascimento, sexo, cns, cpf, rg, cep, endereço, complemento) "
+					+ "(paciente_name, idade, data_nascimento, sexo, cns, cpf, rg, cep, endereço, complemento, user_id) "
 					+ "VALUES "
-					+ "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+					+ "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			st.setString(1, p.getName());
 			st.setInt(2, p.getIdade());
@@ -41,6 +42,7 @@ private Connection conn;
 			st.setString(8, p.getCep());
 			st.setString(9, p.getEndereco());
 			st.setString(10, p.getComplemento());
+			st.setInt(11, user.getId());
 			
             int rowsAffected = st.executeUpdate();
 			
@@ -70,7 +72,7 @@ private Connection conn;
 					"update pacientes "
 					+ "set paciente_name = ?, idade = ?, data_nascimento = ?, "
 					+ "sexo = ?, cns = ?, cpf = ?, rg = ?, cep = ?, endereço = ?, complemento = ? "
-					+ "where id = ?");
+					+ "where paciente_id = ?");
 			st.setString(1, p.getName());
 			st.setInt(2, p.getIdade());
 			st.setDate(3, new java.sql.Date(p.getBirthdate().getTime()));
@@ -113,7 +115,7 @@ private Connection conn;
 
 	@Override
 	public Pacientes findById(int id) {
-		//TODO change id to cpf
+		//TODO change id to name
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
@@ -152,18 +154,20 @@ private Connection conn;
 		obj.setCep(rs.getString("cep"));
 		obj.setEndereco(rs.getString("endereço"));
 		obj.setComplemento(rs.getString("complemento"));
+		obj.setUserId(rs.getInt("user_id"));
 		return obj;
 	}
 	
 	@Override
-	public List<Pacientes> findAll() {
+	public List<Pacientes> findAll(Usuario user) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
 					"SELECT * FROM projetointegrador.pacientes "
+					+"WHERE user_id = ? "
 					+ "ORDER BY paciente_name");
-			
+			st.setInt(1, user.getId());
 			rs = st.executeQuery();
 			
 			List<Pacientes> list = new ArrayList<>();

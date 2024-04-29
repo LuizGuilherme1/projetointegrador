@@ -12,4 +12,12 @@ public class SymptonsService {
 	public List<Symptons> findAll(){
 		return dao.findAll();
 	}
+	
+	public List<Symptons> findCid(){
+		return dao.findCid();
+	}
+	
+	public List<Symptons> search(String s){
+		return dao.search(s.toString());
+	}
 }

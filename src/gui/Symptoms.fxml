@@ -1,39 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="377.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SymptomsController">
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="377.0" prefWidth="598.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SymptomsController">
    <content>
       <VBox prefHeight="373.0" prefWidth="596.0">
          <children>
             <ToolBar prefHeight="40.0" prefWidth="200.0">
               <items>
                 <Button fx:id="btPacientes" mnemonicParsing="false" onAction="#onBtActionPacientes" text="Pacientes" />
-                  <Button fx:id="btAjuda" mnemonicParsing="false" onAction="#onBtActionAjuda" text="ajuda" />
-                  <MenuBar>
-                    <menus>
-                      <Menu mnemonicParsing="false" text="tipo">
-                        <items>
-                          <MenuItem mnemonicParsing="false" text="Close" />
-                        </items>
-                      </Menu>
-                    </menus>
-                  </MenuBar>
+                  <Button fx:id="btAjuda" mnemonicParsing="false" onAction="#onBtActionAjuda" text="Ajuda" />
+                  <ComboBox fx:id="comboCid" prefHeight="25.0" prefWidth="65.0" promptText="CID" />
+                  <TextField fx:id="txSearch" />
+                  <Button fx:id="btSearch" mnemonicParsing="false" onAction="#onBtActionSearch" text="Search" />
+                  <Label textFill="RED" />
               </items>
             </ToolBar>
-            <TableView fx:id="tvSymptoms" prefHeight="333.0" prefWidth="596.0">
+            <TableView fx:id="tvSymptoms" prefHeight="334.0" prefWidth="0.0">
               <columns>
-                <TableColumn fx:id="tcId" prefWidth="75.0" text="tipo" />
-                <TableColumn fx:id="tcName" prefWidth="75.0" text="nome" />
-                  <TableColumn fx:id="tcDescS" prefWidth="75.0" text="sintomas" />
+                <TableColumn fx:id="tcTranstorno" prefWidth="105.0" text="Transtorno" />
+                <TableColumn fx:id="tcCid" minWidth="0.0" prefWidth="67.0" text="CID" />
+                  <TableColumn fx:id="tcSintomas_biologicos" prefWidth="127.0" text="Sintomas Biologicos" />
+                  <TableColumn fx:id="tcConsequencias_sociais" prefWidth="138.0" text="Consequencias Sociais" />
+                  <TableColumn fx:id="tcCaracteristicas" prefWidth="158.0" text="Caracteristicas" />
               </columns>
             </TableView>
          </children>

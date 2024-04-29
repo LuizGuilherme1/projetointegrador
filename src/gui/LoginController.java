@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import model.entites.Usuario;
@@ -29,20 +30,21 @@ public class LoginController {
     private TextField txEmail;
 	
 	@FXML
-    private TextField txPassword;
+    private PasswordField txPassword;
 	
 	public void onBtAction(ActionEvent event) {
 			try {
 				//
 				Usuario user = new Usuario();
 				user.setEmail(txEmail.getText());
-				user.setSenha(txPassword.getText());
+				user.setSenha(txPassword.getText().toString());
 				if (user.getEmail().trim() == ""||user.getSenha().trim() == ""||
 						(user.getEmail() == null && user.getSenha() == null)) {
 		            Alerts.showAlert("Error", null, "Não pode ser nulo", AlertType.ERROR);
 		            return;
 		        }
 				if (service.validate(user)) {
+					service.instantiateId(user);
 					FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/Pacientes.fxml"));
 					ScrollPane scrollpane = loader.load();
 					
@@ -57,7 +59,7 @@ public class LoginController {
 					parentStage.show();
 					
 					PacientesController controller = loader.getController();
-					controller.updateTableView();
+					controller.updateTableView(user);
 					
 				}else {
 				    Alerts.showAlert("Error", null, "Este email não existe ou senha incorreta", AlertType.ERROR);

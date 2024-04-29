@@ -20,16 +20,16 @@
             </ToolBar>
             <TableView fx:id="tvPacientes" prefHeight="335.0" prefWidth="878.0">
               <columns>
-                <TableColumn fx:id="tcName" prefWidth="75.0" text="name" />
-                <TableColumn fx:id="tcIdade" prefWidth="75.0" text="idade" />
-                  <TableColumn fx:id="tcBirthdate" prefWidth="75.0" text="nacimento" />
-                  <TableColumn fx:id="tcSexo" prefWidth="75.0" text="sexo" />
-                  <TableColumn fx:id="tcCns" prefWidth="75.0" text="cns" />
-                  <TableColumn fx:id="tcCpf" prefWidth="75.0" text="cpf" />
-                  <TableColumn fx:id="tcRg" prefWidth="75.0" text="rg" />
-                  <TableColumn fx:id="tcCep" prefWidth="75.0" text="cep" />
-                  <TableColumn fx:id="tcEndereço" prefWidth="75.0" text="endereço" />
-                  <TableColumn fx:id="tcComplemento" prefWidth="75.0" text="complemento" />
+                <TableColumn fx:id="tcName" prefWidth="75.0" text="Nome" />
+                <TableColumn fx:id="tcIdade" prefWidth="75.0" text="Idade" />
+                  <TableColumn fx:id="tcBirthdate" prefWidth="75.0" text="Nacimento" />
+                  <TableColumn fx:id="tcSexo" prefWidth="75.0" text="Gênero" />
+                  <TableColumn fx:id="tcCns" prefWidth="75.0" text="CNS" />
+                  <TableColumn fx:id="tcCpf" prefWidth="75.0" text="CPF" />
+                  <TableColumn fx:id="tcRg" prefWidth="75.0" text="RG" />
+                  <TableColumn fx:id="tcCep" prefWidth="75.0" text="CEP" />
+                  <TableColumn fx:id="tcEndereço" prefWidth="75.0" text="Endereço" />
+                  <TableColumn fx:id="tcComplemento" prefWidth="75.0" text="Complemento" />
                   <TableColumn fx:id="tcEdit" prefWidth="75.0" />
                   <TableColumn fx:id="tcDelete" prefWidth="75.0" />
               </columns>

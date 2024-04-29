@@ -15,12 +15,13 @@ public class Pacientes {
 	private String cep;
 	private String endereco;
 	private String complemento;
+	private Integer userId;
 	
 	public Pacientes() {
 	}
 	
 	public Pacientes(Integer id, String name, int idade, Date birthdate, String sex, String cns, String cpf, String rg,
-			String cep, String endereco, String complemento) {
+			String cep, String endereco, String complemento, Integer userId) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -33,6 +34,7 @@ public class Pacientes {
 		this.cep = cep;
 		this.endereco = endereco;
 		this.complemento = complemento;
+		this.userId = userId;
 	}
 	
 	public Integer getId() {
@@ -101,36 +103,19 @@ public class Pacientes {
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
 	}
-	
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 
 	@Override
 	public String toString() {
 		return "Pacientes [id=" + id + ", name=" + name + ", idade=" + idade + ", birthdate=" + birthdate + ", sex="
 				+ sex + ", cns=" + cns + ", cpf=" + cpf + ", rg=" + rg + ", cep=" + cep + ", endereco=" + endereco
-				+ ", complemento=" + complemento + "]";
+				+ ", complemento=" + complemento + ", userId=" + userId + "]";
 	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(birthdate, cep, cns, complemento, cpf, endereco, sex, id, idade, name, rg);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Pacientes other = (Pacientes) obj;
-		return Objects.equals(birthdate, other.birthdate) && Objects.equals(cep, other.cep)
-				&& Objects.equals(cns, other.cns) && Objects.equals(complemento, other.complemento)
-				&& Objects.equals(cpf, other.cpf) && Objects.equals(endereco, other.endereco)
-				&& Objects.equals(sex, other.sex) && id == other.id && idade == other.idade
-				&& Objects.equals(name, other.name) && Objects.equals(rg, other.rg);
-	}
-	
 	
 	
 	

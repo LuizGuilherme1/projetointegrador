@@ -5,17 +5,18 @@ import java.util.List;
 import model.dao.DaoFactory;
 import model.dao.PacientesDao;
 import model.entites.Pacientes;
+import model.entites.Usuario;
 
 public class PacienteService {
 	private PacientesDao dao = DaoFactory.createPacientesDao();
 	
-	public List<Pacientes> findAll(){
-		return dao.findAll();
+	public List<Pacientes> findAll(Usuario user){
+		return dao.findAll(user);
 	}
 	
-	public void saveOrUpdate(Pacientes obj) {
+	public void saveOrUpdate(Pacientes obj, Usuario user) {
 		if(obj.getId() == null) {
-			dao.insert(obj);
+			dao.insert(obj, user);
 		}else {
 			dao.edit(obj);
 		}
