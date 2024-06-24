@@ -25,12 +25,14 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entites.Pacientes;
+import model.entites.Symptons;
 import model.entites.Usuario;
 import model.service.PacienteService;
 
@@ -80,6 +82,12 @@ public class PacientesController implements Initializable, DataChangeListener{
 	private TableColumn<Pacientes, Pacientes> tcDelete;
 	
 	@FXML
+	private TableColumn<Pacientes, Pacientes> tcEvolucao;
+	
+	@FXML
+	private TextField txName;
+	
+	@FXML
 	private Button btSintomas;
 	
 	@FXML
@@ -91,7 +99,39 @@ public class PacientesController implements Initializable, DataChangeListener{
 	@FXML
 	private Button btAjuda;
 	
+	@FXML
+	private Button btUsuarios;
+	
 	private ObservableList<Pacientes> obsList;
+	
+	@FXML
+	public void btActionUsuarios(ActionEvent event) {
+		try {
+			  if(user.getKey() == "True") {
+				  btUsuarios.setVisible(true);
+				  FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/Usuarios.fxml"));
+				  ScrollPane scrollpane = loader.load();
+				
+				  scrollpane.setFitToHeight(true);
+				  scrollpane.setFitToWidth(true);
+				
+				  Stage parentStage = Utils.currentStage(event);
+				  Scene scene = Main.getMainScene();
+				  scene = new Scene(scrollpane);
+				  parentStage.setScene(scene);
+				  parentStage.setTitle("Usuarios");
+				  parentStage.show();
+				
+				  UsuariosController controller = loader.getController();
+				  controller.updateTableView(user);
+			  }else {
+				  btUsuarios.setVisible(false);
+			  }
+			  
+			}catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
 	
 	@FXML
 	public void btActionCadastro(ActionEvent event) {
@@ -124,18 +164,32 @@ public class PacientesController implements Initializable, DataChangeListener{
 			e.printStackTrace();
 		}
 	}
-	/*
+	
 	@FXML
 	public void btActionPesquisa() {
-		//TODO
+		if (service == null) {
+			throw new IllegalStateException("Service was null");
+		}
+		if(txName.getText()==null||txName.getText().trim().equals("")){
+		    List<Pacientes> list = service.findAll(user);
+		    obsList = FXCollections.observableArrayList(list);
+		    tvPacientes.setItems(obsList);
+		}else {
+			String s = ("%"+txName.getText()+"%");
+			List<Pacientes> list = service.findByName(s,user);
+			obsList = FXCollections.observableArrayList(list);
+			tvPacientes.setItems(obsList);
+		}
 	}
-	*/
+	
 	@FXML
 	public void btActionAjuda() {
 		Alerts.showAlert("Sobre", "uma pagina para esplicar o que os botoes fazem", 
 				"Sintomas redireciona para a pagina de sintomas, Cadastro adiciona um novo paciente, "
 				+ "pesquisa acha um paciente por id, Ajuda ver Sobre, Edit permit editar os dados de um paciente "
-				+ "e Delete deleta um paciente.", AlertType.INFORMATION);
+				+ "e Delete deleta um paciente, "
+				+ "Buscar acha os Pacientes com o mesmo nome, caso "
+				+ " estiver vasio ele retorna todos os pacientes ", AlertType.INFORMATION);
 	}
 	
 	public void setPacienteServices(PacienteService service) {
@@ -156,7 +210,7 @@ public class PacientesController implements Initializable, DataChangeListener{
 			controller.updateFormData();
 
 			Stage dialogStage = new Stage();
-			dialogStage.setTitle("enter Department data");
+			dialogStage.setTitle("enter Paciente data");
 			dialogStage.setScene(new Scene(pane));
 			dialogStage.setResizable(false);
 			dialogStage.initOwner(parentStage);
@@ -183,12 +237,60 @@ public class PacientesController implements Initializable, DataChangeListener{
 		tvPacientes.setItems(obsList);
 		initEditButtons();
 		initDeleteButtons();
+		initEvolucaoButtons();
 	}
+	
+	private void initEvolucaoButtons() {
+		//TODO
+		tcEvolucao.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+		tcEvolucao.setCellFactory(param -> new TableCell<Pacientes, Pacientes>(){
+			private final Button button = new Button("Evolução");
+			@Override
+			protected void updateItem(Pacientes obj, boolean empty) {
+				super.updateItem(obj, empty);
+				if (obj == null) {
+					setGraphic(null);
+					return;
+				}
+				setGraphic(button);
+				button.setOnAction(
+						event -> createEvoluçao(obj, "/gui/Evolucao.fxml", Utils.currentStage(event)));
+			}
+			
+		});
+	}
+	
+	private void createEvoluçao(Pacientes obj, String absoluteName, Stage parentStage) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+			Pane pane = loader.load();
+
+			EvolucaoController controller = loader.getController();
+			controller.setPaciente(obj);
+			controller.setUser(user);
+			controller.setService(new PacienteService());
+			controller.subscribeDataChangeListener(this);
+			controller.updateFormData();
+
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("enter Paciente data");
+			dialogStage.setScene(new Scene(pane));
+			dialogStage.setResizable(false);
+			dialogStage.initOwner(parentStage);
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.showAndWait();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			Alerts.showAlert("IOException", "error loading view", e.getMessage(), AlertType.ERROR);
+		}
+	}
+	
 	
 	private void initEditButtons() {
 		tcEdit.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
 		tcEdit.setCellFactory(param -> new TableCell<Pacientes, Pacientes>() {
-			private final Button button = new Button("edit");
+			private final Button button = new Button("Edit");
 
 			@Override
 			protected void updateItem(Pacientes obj, boolean empty) {
@@ -207,7 +309,7 @@ public class PacientesController implements Initializable, DataChangeListener{
 	private void initDeleteButtons() {
 		tcDelete.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
 		tcDelete.setCellFactory(param -> new TableCell<Pacientes, Pacientes>() {
-			private final Button button = new Button("remove");
+			private final Button button = new Button("Remove");
 
 			@Override
 			protected void updateItem(Pacientes obj, boolean empty) {

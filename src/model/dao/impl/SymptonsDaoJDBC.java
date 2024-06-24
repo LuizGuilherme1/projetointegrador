@@ -59,7 +59,6 @@ public class SymptonsDaoJDBC implements SymptonsDao{
 
 	@Override
 	public List<Symptons> search(String s) {
-		// TODO Auto-generated method stub
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {

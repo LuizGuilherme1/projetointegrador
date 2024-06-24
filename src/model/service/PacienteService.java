@@ -14,6 +14,10 @@ public class PacienteService {
 		return dao.findAll(user);
 	}
 	
+	public List<Pacientes> findByName(String name, Usuario user){
+		return dao.findByName(name, user);
+	}
+	
 	public void saveOrUpdate(Pacientes obj, Usuario user) {
 		if(obj.getId() == null) {
 			dao.insert(obj, user);

@@ -4,21 +4,25 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="405.0" prefWidth="913.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.PacientesController">
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="390.0" prefWidth="968.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.PacientesController">
    <content>
-      <VBox prefHeight="387.0" prefWidth="884.0">
+      <VBox prefHeight="387.0" prefWidth="964.0">
          <children>
             <ToolBar prefHeight="40.0" prefWidth="200.0">
               <items>
                   <Button fx:id="btCadastro" mnemonicParsing="false" onAction="#btActionCadastro" text="Cadastro" />
+                  <TextField fx:id="txName" />
+                  <Button fx:id="btPesquisa" mnemonicParsing="false" onAction="#btActionPesquisa" text="Buscar" />
                 <Button fx:id="btSintomas" mnemonicParsing="false" onAction="#btActionSintomas" text="Sintomas" />
                   <Button fx:id="btAjuda" mnemonicParsing="false" onAction="#btActionAjuda" text="Ajuda" />
+                  <Button fx:id="btUsuarios" mnemonicParsing="false" onAction="#btActionUsuarios" text="Usuarios" />
               </items>
             </ToolBar>
-            <TableView fx:id="tvPacientes" prefHeight="335.0" prefWidth="878.0">
+            <TableView fx:id="tvPacientes" prefHeight="346.0" prefWidth="951.0">
               <columns>
                 <TableColumn fx:id="tcName" prefWidth="75.0" text="Nome" />
                 <TableColumn fx:id="tcIdade" prefWidth="75.0" text="Idade" />
@@ -29,9 +33,10 @@
                   <TableColumn fx:id="tcRg" prefWidth="75.0" text="RG" />
                   <TableColumn fx:id="tcCep" prefWidth="75.0" text="CEP" />
                   <TableColumn fx:id="tcEndereço" prefWidth="75.0" text="Endereço" />
-                  <TableColumn fx:id="tcComplemento" prefWidth="75.0" text="Complemento" />
-                  <TableColumn fx:id="tcEdit" prefWidth="75.0" />
-                  <TableColumn fx:id="tcDelete" prefWidth="75.0" />
+                  <TableColumn fx:id="tcComplemento" prefWidth="90.0" text="Complemento" />
+                  <TableColumn fx:id="tcEdit" prefWidth="64.0" />
+                  <TableColumn fx:id="tcDelete" prefWidth="65.0" />
+                  <TableColumn fx:id="tcEvolucao" prefWidth="63.0" text="Evolução" />
               </columns>
             </TableView>
          </children>

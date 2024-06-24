@@ -245,12 +245,11 @@ public class AddController implements Initializable{
 	}
 	
 	private void setErrorMessages(Map<String, String> errors) {
-		//TODO
 		Set<String> fields = errors.keySet();
 
 		labelErrorName.setText((fields.contains("paciente_name") ? errors.get("paciente_name") : ""));
 		labelErrorIdade.setText((fields.contains("idade") ? errors.get("idade") : ""));
-		labelErrorBirthdate.setText((fields.contains("data_nascimento") ? errors.get("data_nascimento") : ""));
+		labelErrorBirthdate.setText((fields.contains("data_nascimento") ? errors.get("birthdate") : ""));
 		labelErrorSex.setText((fields.contains("sexo") ? errors.get("sexo") : ""));
 		labelErrorCpf.setText((fields.contains("cpf") ? errors.get("cpf") : ""));
 	}

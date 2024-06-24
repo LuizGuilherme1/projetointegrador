@@ -61,7 +61,7 @@ private Connection conn;
 			throw new DbException(e.getMessage());
 		}finally {
 			DB.closeStatement(st);
-		 }
+		}
 	}	
 
 	@Override
@@ -114,23 +114,26 @@ private Connection conn;
 	}
 
 	@Override
-	public Pacientes findById(int id) {
-		//TODO change id to name
+	public List<Pacientes> findByName(String name, Usuario user) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
 					"SELECT * "
 					+ "FROM pacientes "
-					+ "WHERE paciente_id = ?");
+					+ "WHERE paciente_name LIKE ? and user_id = ?");
 			
-			st.setInt(1, id);
+			st.setString(1, name);
+			st.setInt(2, user.getId());
 			rs = st.executeQuery();
-			if (rs.next()) {
+			
+            List<Pacientes> list = new ArrayList<>();
+			
+			while (rs.next()) {
 				Pacientes obj = instantiatePacientes(rs);
-				return obj;
+				list.add(obj);
 			}
-			return null;
+			return list;
 		}
 		catch (SQLException e) {
 			throw new DbException(e.getMessage());
@@ -164,7 +167,7 @@ private Connection conn;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT * FROM projetointegrador.pacientes "
+					"SELECT * FROM pacientes "
 					+"WHERE user_id = ? "
 					+ "ORDER BY paciente_name");
 			st.setInt(1, user.getId());
@@ -180,10 +183,30 @@ private Connection conn;
 		}
 		catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		}finally {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
+		}
+	}
+
+	@Override
+	public void evolucaoEdit(Pacientes p) {
+		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement(
+					"update pacientes "
+					+"set evolucao_clinica = ?"
+					+ "where paciente_id = ?");
+			st.setString(1, p.getEvolucao());
+			st.setInt(2, p.getId());
+			
+			st.executeUpdate();
+					
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}finally {
+			DB.closeStatement(st);
 		}
 	}
 	

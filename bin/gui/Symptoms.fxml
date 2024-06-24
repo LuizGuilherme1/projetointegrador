@@ -16,12 +16,13 @@
          <children>
             <ToolBar prefHeight="40.0" prefWidth="200.0">
               <items>
-                <Button fx:id="btPacientes" mnemonicParsing="false" onAction="#onBtActionPacientes" text="Pacientes" />
-                  <Button fx:id="btAjuda" mnemonicParsing="false" onAction="#onBtActionAjuda" text="Ajuda" />
                   <ComboBox fx:id="comboCid" prefHeight="25.0" prefWidth="65.0" promptText="CID" />
                   <TextField fx:id="txSearch" />
-                  <Button fx:id="btSearch" mnemonicParsing="false" onAction="#onBtActionSearch" text="Search" />
+                  <Button fx:id="btSearch" mnemonicParsing="false" onAction="#onBtActionSearch" text="Buscar" />
+                <Button fx:id="btPacientes" mnemonicParsing="false" onAction="#onBtActionPacientes" text="Pacientes" />
                   <Label textFill="RED" />
+                  <Button fx:id="btAjuda" mnemonicParsing="false" onAction="#onBtActionAjuda" text="Ajuda" />
+                  <Button fx:id="btUsuarios" mnemonicParsing="false" onAction="#btActionUsuarios" text="Usuarios" />
               </items>
             </ToolBar>
             <TableView fx:id="tvSymptoms" prefHeight="334.0" prefWidth="0.0">

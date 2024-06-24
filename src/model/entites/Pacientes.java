@@ -15,6 +15,7 @@ public class Pacientes {
 	private String cep;
 	private String endereco;
 	private String complemento;
+	private String Evolucao;
 	private Integer userId;
 	
 	public Pacientes() {
@@ -110,13 +111,20 @@ public class Pacientes {
 		this.userId = userId;
 	}
 
+	public String getEvolucao() {
+		return Evolucao;
+	}
+
+	public void setEvolucao(String evolucao) {
+		Evolucao = evolucao;
+	}
+
 	@Override
 	public String toString() {
 		return "Pacientes [id=" + id + ", name=" + name + ", idade=" + idade + ", birthdate=" + birthdate + ", sex="
 				+ sex + ", cns=" + cns + ", cpf=" + cpf + ", rg=" + rg + ", cep=" + cep + ", endereco=" + endereco
-				+ ", complemento=" + complemento + ", userId=" + userId + "]";
+				+ ", complemento=" + complemento + ", Evolucao=" + Evolucao + ", userId=" + userId + "]";
 	}
-	
 	
 	
 }

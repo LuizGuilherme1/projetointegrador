@@ -76,6 +76,9 @@ public class SymptomsController implements Initializable, DataChangeListener{
 	@FXML
 	private Label labelError;
 	
+	@FXML
+	private Button btUsuarios;
+	
 	private ObservableList<Symptons> obsList;
 	
 	public void setSymptonsServices(SymptonsService service) {
@@ -83,12 +86,36 @@ public class SymptomsController implements Initializable, DataChangeListener{
 	}
 	
 	@FXML
+	public void btActionUsuarios(ActionEvent event) {
+		try {
+			  FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/Usuarios.fxml"));
+			  ScrollPane scrollpane = loader.load();
+			
+			  scrollpane.setFitToHeight(true);
+			  scrollpane.setFitToWidth(true);
+			
+			  Stage parentStage = Utils.currentStage(event);
+			  Scene scene = Main.getMainScene();
+			  scene = new Scene(scrollpane);
+			  parentStage.setScene(scene);
+			  parentStage.setTitle("Usuarios");
+			  parentStage.show();
+			
+			  UsuariosController controller = loader.getController();
+			  controller.updateTableView(user);
+			  
+			}catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
+	
+	@FXML
 	public void onBtActionSearch() {
-		//TODO
-		ValidationException exception = new ValidationException("Validation error");
 		
 		if(txSearch.getText() == null || txSearch.getText().trim().equals("")) {
-			exception.addError("search", "Field can't be empty");
+			List<Symptons> list = service.findAll();
+			obsList = FXCollections.observableArrayList(list);
+			tvSymptoms.setItems(obsList);
 		}else {
 			String s = ("%"+txSearch.getText()+"%");
 			List<Symptons> list = service.search(s);
@@ -111,7 +138,10 @@ public class SymptomsController implements Initializable, DataChangeListener{
 	public void onBtActionAjuda() {
 		Alerts.showAlert("Sobre", "uma pagina para esplicar o que os botoes fazem", 
 				"Pacientes redireciona para a pagina de Pacientes, "
-				+ "Ajuda ver Sobre", AlertType.INFORMATION);
+				+ "Ajuda ver Sobre, "
+				+ "Buscar acha os Sintomas com um mesmo sintomas "
+				+ " inserido e mostra na tabelha, "
+				+ " caso não tenha nada escrito retorna todos os Sintomas.", AlertType.INFORMATION);
 	}
 	
 	@FXML
